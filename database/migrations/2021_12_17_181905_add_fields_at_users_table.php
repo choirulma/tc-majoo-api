@@ -13,11 +13,14 @@ class AddFieldsAtUsersTable extends Migration
      */
     public function up()
     {
+        Schema::rename('users', 'Users');
+
         Schema::table('Users', function (Blueprint $table) {
             $table->string('name', 45)->change();
-            $table->string('user_name', 45)->after('name');
-            $table->bigInteger('created_by');
-            $table->bigInteger('updated_by');
+            $table->dropColumn('email');
+            $table->dropColumn('email_verified_at');
+            $table->dropColumn('remember_token');
+            $table->string('user_name', 45)->unique()->after('name');
         });
     }
 
@@ -29,9 +32,12 @@ class AddFieldsAtUsersTable extends Migration
     public function down()
     {
         Schema::table('Users', function (Blueprint $table) {
-            $table->dropColumn('updated_by');
-            $table->dropColumn('created_by');
             $table->dropColumn('user_name');
+            $table->string('remember_token', 100)->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('email')->unique();
         });
+
+        Schema::rename('Users', 'users');
     }
 }
