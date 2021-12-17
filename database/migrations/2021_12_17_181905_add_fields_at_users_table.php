@@ -33,9 +33,9 @@ class AddFieldsAtUsersTable extends Migration
     {
         Schema::table('Users', function (Blueprint $table) {
             $table->dropColumn('user_name');
-            $table->string('remember_token', 100)->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('email')->unique();
+            $table->string('remember_token', 100)->nullable()->after('password');
+            $table->timestamp('email_verified_at')->nullable()->after('name');
+            $table->string('email')->after('name');
         });
 
         Schema::rename('Users', 'users');
