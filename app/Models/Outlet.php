@@ -10,4 +10,14 @@ class Outlet extends Model
     use HasFactory;
 
     protected $table = 'Outlets';
+
+    public function merchant()
+    {
+        return $this->belongsTo(Merchant::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 // use Laravel\Sanctum\HasApiTokens;
 use Laravel\Passport\HasApiTokens;
 
@@ -45,4 +46,20 @@ class User extends Authenticatable
     protected $casts = [
         // 'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Find the user instance for the given username.
+     *
+     * @param  string  $username
+     * @return \App\User
+     */
+    public function findForPassport($username)
+    {
+        return $this->where('user_name', $username)->first();
+    }
+
+    public function validateForPassportPasswordGrant($password)
+    {
+        return Hash::check($password, $this->password);
+    }
 }
