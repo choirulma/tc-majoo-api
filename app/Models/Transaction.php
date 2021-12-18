@@ -22,6 +22,11 @@ class Transaction extends Model
         return $this->belongsTo(Outlet::class);
     }
 
+    /**
+     * Get Data Omzet for Merchant and Outlet
+     * @param boolean $outlet
+     * @return array $data
+     */
     public static function _getTransactionDaily($outlet = false)
     {
         $data = new Transaction();
@@ -44,7 +49,7 @@ class Transaction extends Model
             ->groupBy('Outlets.outlet_name');
         }
 
-        $data = $data->addSelect(\DB::raw('SUM(Transactions.bill_total) as bill_total'));
+        $data = $data->addSelect(\DB::raw('SUM(Transactions.bill_total) as omzet'));
         $data = $data->where('Users.user_name', Auth::user()->user_name)
             ->groupBy(\DB::raw('DATE_FORMAT(Transactions.created_at, "%Y-%m-%d")'), 'Transactions.merchant_id')
             ->orderBy(\DB::raw('DATE_FORMAT(Transactions.created_at, "%Y-%m-%d")'), 'ASC');
