@@ -51,7 +51,7 @@ class Transaction extends Model
 
         $data = $data->addSelect(\DB::raw('SUM(Transactions.bill_total) as omzet'));
         $data = $data->where('Users.user_name', Auth::user()->user_name)
-            ->groupBy(\DB::raw('DATE_FORMAT(Transactions.created_at, "%Y-%m-%d")'), 'Transactions.merchant_name')
+            ->groupBy(\DB::raw('DATE_FORMAT(Transactions.created_at, "%Y-%m-%d")'), 'Merchants.merchant_name')
             ->orderBy(\DB::raw('DATE_FORMAT(Transactions.created_at, "%Y-%m-%d")'), 'ASC');
 
         $data = $data->paginate(5)
